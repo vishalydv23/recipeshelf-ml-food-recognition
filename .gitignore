@@ -1,0 +1,5 @@
+# Complete dataset
+data/raw/
+
+# Notebook checkpoints
+.ipynb_checkpoints/

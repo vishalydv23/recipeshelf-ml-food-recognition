@@ -1,4 +1,4 @@
-# Recognizing food based on images (recipeshelf-ml-food-recognition)
+# Food image recognition (recipeshelf-ml-food-recognition)
 
 Food image detection. This repo explores the state-of-art techniques available to detect food images and try to improve them.
 
@@ -144,13 +144,21 @@ As we get the Colab session lasting for only 10-12 hours or you might get discon
 ```python
 model.load_weights('drive/My Drive/Deeplearning/model/model4.08-0.71.hdf5')
 ```
-
+ 
+#### Model Evaluation
 Once you see the convergence. You can load the model and do the evaluation as described in the original code. We want to evaluate the test set using multiple crops. This is expected to raise the accuracy by 5% compared to single crop evaluation. It is common to use the following crops: Upper Left, Upper Right, Lower Left, Lower Right, Center. We also take the same crops on the image flipped left to right, creating a total of 10 crops.
 
 Evaluating the result on a random Padthai image from the internet
+
+
 ![alt text](https://github.com/codingnuclei/recipeshelf-ml-food-recognition/blob/master/data/ReadmeStore/padthai.jpg "padthai")
 
+
 ```python
+import matplotlib.image as matimg
+from PIL import Image
+import PIL
+
 model = load_model('model address/model4.08-0.67.hdf5')
 
 def center_crop(x, center_crop_size, **kwargs):
@@ -196,6 +204,34 @@ def predict_10_crop(img, top_n=5, plot=False, preprocess=True, debug=False):
         print('Top-1 Predicted:', preds)
         print('Top-5 Predicted:', top_n_preds)
     return preds, top_n_preds
+
+# Resizing and cropping the input image 
+allowedAspectratio = 1.3
+
+img = Image.open('test image address')
+
+mywidth = 400
+wpercent = (mywidth/float(img.size[0]))
+hsize = int((float(img.size[1])*float(wpercent)))
+img = img.resize((mywidth,hsize), PIL.Image.ANTIALIAS)
+img.save('resizedimage.jpg')
+
+im = Image.open('resizedimage.jpg')
+width, height = im.size   # Get dimensions
+if(height > width):
+    if((height/width) > allowedAspectratio):
+        extraHeight = height - (width * 1.3)
+        top = extraHeight/2
+        bottom = height - extraHeight/2
+        im = im.crop((0, top, width, bottom))
+        im.save('resizedimage.jpg')
+else:
+    if((width/height) > allowedAspectratio):
+        extraWidth = width - (height * 1.3)
+        left = extraWidth/2
+        right = width - extraWidth/2
+        im = im.crop((left, 0, right, height))
+        im.save('resizedimage.jpg')
 
 img_arr = img.imread("image address")
 prediction, topNPrediction = predict_10_crop(img_arr, top_n=5, plot=True, preprocess=False, debug=True)

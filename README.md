@@ -201,7 +201,7 @@ img_arr = img.imread("image address")
 prediction, topNPrediction = predict_10_crop(img_arr, top_n=5, plot=True, preprocess=False, debug=True)
 ```
 
-![alt text](https://github.com/codingnuclei/recipeshelf-ml-food-recognition/blob/master/data/ReadmeStore/padthaiprediction.png "padthai")
+![alt text](https://github.com/codingnuclei/recipeshelf-ml-food-recognition/blob/master/data/ReadmeStore/padthaiprediction.PNG "padthai")
 
 Let's see what is the most common prediction in all 10 crops.
 

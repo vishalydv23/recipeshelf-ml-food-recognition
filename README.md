@@ -3,8 +3,7 @@
 Food image detection. This repo explores the state-of-art techniques available to detect food images and try to improve them.
 
 ### Current best result
-Currently we are getting a *Top-1 accuracy of **88%*** and *top-5 accuracy of **97%*** on the dataset food-101 using **Inception-v3**. This is achieved by taking inspiration from this [Git Repo](https://github.com/stratospark/food-101-keras). But the author of this code ran the job on a very heavy system (Nvidia Titan X Pascal w/12 GB of memory, 96 GB of system RAM, as well as a 12-core Intel Core i7) that he built. Instead, we modified the code so that it runs on **Google Colab free tier** i.e. 12 GB system RAM, Nvidia K80 w/12 GB Memory and a chunk of shared computing.     
-
+Currently we are getting a *Top-1 accuracy of **88%*** and *top-5 accuracy of **97%*** on the dataset food-101 using **Inception-v3**. This is achieved by taking inspiration from this [Git Repo](https://github.com/stratospark/food-101-keras). But the author of this code ran the job on a very heavy system (Nvidia Titan X Pascal w/12 GB of memory, 96 GB of system RAM, as well as a 12-core Intel Core i7) that he built. Instead, we modified the code so that it trains on **Google Colab free tier** i.e. 12 GB system RAM, Nvidia K80 w/12 GB Memory and a chunk of shared computing. Also, going by the original code we needed a big size of RAM to prepare data to do performance analysis. We modified the code so that we can do the same on 16GB RAM of my laptop and it worked fine.  
 ---
 ---
 
@@ -233,7 +232,7 @@ else:
         im = im.crop((left, 0, right, height))
         im.save('resizedimage.jpg')
 
-img_arr = img.imread("image address")
+img_arr = img.imread("resizedimage.jpg")
 prediction, topNPrediction = predict_10_crop(img_arr, top_n=5, plot=True, preprocess=False, debug=True)
 ```
 
@@ -251,4 +250,61 @@ print(list(labelDictonary.keys())[list(labelDictonary.values()).index(mostCommon
 ```
 
 70
-pad_thai
+pad_thai <---------- This is Awesomeeeeeee!!!!!!
+
+#### Performance Analysis
+
+We have modified how the data is prepared to for making prediction on the test set. Original code required a big RAM size, we have optimized it to run on much smaller RAM size. We ran it on a laptop with 16GB RAM and it worked fine. 
+
+```python
+import os
+from PIL import Image
+import matplotlib.image as matimg
+import keras.backend as K
+
+path = 'food-101/test/'
+
+topNPred = 5
+topPred2D = np.zeros((25250,12))
+top5Pred3D = np.zeros((25250,10,topNPred))
+imageCount = 0
+
+for r, d, f in tqdm(os.walk(path)):
+    for file in f:
+        fileName = os.path.join(r, file)
+        className = fileName.split('/')[-1]
+        className = className.split('\\')[0]
+        try:
+            imageResize(fileName)
+            img_arr = matimg.imread("data/updatedImage.jpg")
+            prediction, topNPrediction = predict_10_crop(img_arr, top_n=topNPred, plot=False, preprocess=False, debug=False)
+            
+            K.clear_session()
+            # populating the 2D array
+            topPred2D[imageCount][0] = classList.index(className) # actual class index from classes.txt file
+            topPred2D[imageCount][1:-1] = prediction # prediction for all 10 crops
+            counts = np.bincount(prediction) 
+            mostCommonPrediction = np.argmax(counts)
+            topPred2D[imageCount][-1] = mostCommonPrediction # most common value among all 10 predictions
+        
+            top5Pred3D[imageCount] = topNPrediction
+        except:
+            print(fileName)
+            
+        
+        imageCount = imageCount + 1
+```
+
+Also, we are storing the predicted results on the test set in HDF5 files for later use. 
+
+```python
+import h5py
+
+# Address to store the HDF5 file 
+hdf5Path = r'..\..\data\processed\predictions.hdf5'
+
+h5f = h5py.File(hdf5Path, 'w')
+h5f.create_dataset('topPred2D', data=topPred2D)
+h5f.create_dataset('top5Pred3D', data=top5Pred3D)
+h5f.close()
+```

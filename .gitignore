@@ -6,3 +6,6 @@ data/raw/
 data/processed/testimageData.txt
 data/processed/trainingimageData.txt
 data/processed/dataset.hdf5
+data/abc.jpg
+data/processed/predictions.hdf5
+logs/model4.log

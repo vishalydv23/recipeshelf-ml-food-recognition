@@ -2,10 +2,22 @@
 
 Food image detection. This repo explores the state-of-art techniques available to detect food images and try to improve them.
 
-### Current best result
+# Current best result
 
-Currently we are getting a *Top-1 accuracy of **88%*** and *top-5 accuracy of **97%*** on the dataset food-101 using **Inception-v3**. This is achieved by taking inspiration from this [Git Repo](https://github.com/stratospark/food-101-keras). But the author of this code ran the job on a very heavy system (Nvidia Titan X Pascal w/12 GB of memory, 96 GB of system RAM, as well as a 12-core Intel Core i7) that he built. Instead, we modified the code so that it trains on **Google Colab free tier** i.e. 12 GB system RAM, Nvidia K80 w/12 GB Memory and a chunk of shared computing. Also, going by the original code we needed a big size of RAM to prepare data to do performance analysis. We modified the code so that we can do the same on 16GB RAM of my laptop and it worked fine.  
+## EfficientNet-B4
+### Top-1 Accuracy with TTA 91.71%, Top-1 Accuracy without TTA 91.22%, Top-5 Accuracy without TTA 98.63%
+The notebooks may show something went wrong in browser, download it and run it locally. 
+Link to Notebook: [Food101 EfficientNet-B4](https://github.com/codingnuclei/recipeshelf-ml-food-recognition/blob/master/notebook/modeling/fastai/Food101EfficientNetb4.ipynb)
 
+
+## ResNet-152
+### Top-1 Accuracy with TTA 91.21%, Top-1 Accuracy without TTA 90.68%, Top-5 Accuracy without TTA 98.49%
+Link to Notebook: [Food101 ResNet152](https://github.com/codingnuclei/recipeshelf-ml-food-recognition/blob/master/notebook/modeling/fastai/fodd101ResNet152.ipynb)
+
+**EfficientNet-B7 hasn't been much played around with.**
+Link to Notebook: [Food101 EfficientNet-B7](https://github.com/codingnuclei/recipeshelf-ml-food-recognition/blob/master/notebook/modeling/fastai/Food101_Efficientnet_b7.ipynb)
+
+Rest of the Readme is old and will be updated soon. 
 ---
 ---
 

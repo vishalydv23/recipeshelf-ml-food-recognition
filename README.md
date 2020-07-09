@@ -6,7 +6,6 @@ Food image detection. This repo explores the state-of-art techniques available t
 
 ## EfficientNet-B4
 ### Top-1 Accuracy with TTA 91.71%, Top-1 Accuracy without TTA 91.22%, Top-5 Accuracy without TTA 98.63%
-The notebooks may show something went wrong in browser, download it and run it locally. 
 Link to Notebook: [Food101 EfficientNet-B4](https://github.com/vishalydv23/recipeshelf-ml-food-recognition/blob/master/notebook/modeling/fastai/Food101EfficientNetb4.ipynb)
 
 
@@ -18,7 +17,7 @@ Link to Notebook: [Food101 ResNet152](https://github.com/vishalydv23/recipeshelf
 **EfficientNet-B7 hasn't been much played around with. The basic code structure is made available.**
 Link to Notebook: [Food101 EfficientNet-B7](https://github.com/vishalydv23/recipeshelf-ml-food-recognition/blob/master/notebook/modeling/fastai/Food101_Efficientnet_b7.ipynb)
 
-Rest of the Readme is old and will be updated soon. 
+## Rest of the Readme is old and will be updated soon. 
 ---
 ---
 
